@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>eProcure | Sign Up</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-control" content="public" />
+    <meta
+      content="text/html; charset=UTF-8; X-Content-Type-Options=nosniff"
+      http-equiv="Content-Type"
+    />
+    <link
+      href="https://www.e-procure.co.za/StyleSheet-SignUp.css"
+      rel="stylesheet"
+      data-preload="true"
+    />
+    <link
+      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.cdnfonts.com/css/hk-nova" rel="stylesheet" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://www.e-procure.co.za/motus_sitelogo.ico"
+    />
+  </head>
+
+  <body>
+    <div class="m_container">
+      <img
+        class="motus_logo"
+        alt="logo"
+        src="https://www.e-procure.co.za/logo.png"
+      />
+      <div class="login-home-group">
+        <a
+          class="login-home"
+          href="https://MotusB2C.b2clogin.com/MotusB2C.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_qaLogin&client_id=01df0857-02e4-4460-8c48-418518bb2b69&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fdeveprocure.motusfs.co.za%2F&scope=openid&response_type=id_token&prompt=login"
+          >Login</a
+        >
+        |
+        <a class="login-home" href="https://www.e-procure.co.za">Home</a>
+      </div>
+      <div class="MuiBox-root form_title">Create a profile</div>
+      <div
+        class="MuiBox-root motus_paragraph MuiGrid-item MuiGrid-grid-sx-6"
+        style="margin-bottom: 25px"
+      >
+        You’ll need to create an account to complete your pre-approval process.
+        Please confirm your phone number.
+      </div>
+      <hr class="divisionBorder" />
+
+      <div class="form_container">
+        <p class="form_header">
+          <img
+            alt
+            class="motus_red_logo"
+            src="https://uat.e-procure.co.za/Motus_SiteLogo.png"
+          />
+          Multi-Factor Authentication
+        </p>
+        <div class="MuiBox-root motus_paragraph MuiGrid-item MuiGrid-grid-sx-6">
+          Create a profile to manage your application
+        </div>
+
+        <div class="MuiBox-root">
+          <div id="api"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(window, document, undefined).ready(function () {
+        onload();
+      });
+
+      (function () {
+        orig = $.fn.css;
+        $.fn.css = function () {
+          var result = orig.apply(this, arguments);
+          $(this).trigger("stylechanged");
+          return result;
+        };
+      })();
+      function onload() {
+        $("a:contains('What is this?')").hide();
+        $("#api").prepend(
+          '<div class="mdc-layout-grid" id="phoneEntry"><div id="fieldGrid" class="mdc-layout-grid__inner"><div id="grid_country" class="mdc-layout-grid__cell"></div><div id="grid_phone" class="mdc-layout-grid__cell"></div><div class="mdc-layout-grid__cell"></div><div id="grid_code" class="mdc-layout-grid__cell"></div></div><hr class="divisionBorder" /><div class="mdc-layout-grid attr"><div class="mdc-layout-grid__inner"><div id="grid_button" class="mdc-layout-grid__cell2"></div></div></div></div>'
+        );
+        $("#api").prepend($("#fieldIncorrect"));
+
+        $("div.phoneEntry div.code").appendTo("#grid_country");
+        $("div.phoneEntry div.number").appendTo("#grid_phone");
+        $("#codeVerification").appendTo("#grid_code");
+
+        $("div.buttons").appendTo("#grid_button");
+        $("a#retryCode").appendTo("#grid_button");
+        $("a#retryCode").hide();
+        $("#sendCode").show();
+
+        $("#countryCode").after($('label[for="countryCode"]'));
+        $("#number").after($('label[for="number"]'));
+        $("#verificationCode").after($('label[for="verificationCode"]'));
+
+        $('label[for="countryCode"]').after(
+          $("#grid_country div.itemLevel.error")
+        );
+        $('label[for="number"]').after($("#grid_phone div.itemLevel.error"));
+        $('label[for="verificationCode"]').after(
+          $("#grid_code div.itemLevel.error")
+        );
+
+        $("#grid_country div.itemLevel.error").addClass("errorText");
+        $("#grid_phone div.itemLevel.error").addClass("errorText");
+        $("#grid_code div.itemLevel.error").addClass("errorText");
+
+        $("#fieldIncorrect").addClass("errorMainText");
+
+        $("#grid_code div.itemLevel.error").on(
+          "DOMSubtreeModified",
+          function (value) {
+            if ($(this)[0].innerText !== "") {
+              $("#grid_code").addClass("mdc-layout-grid__cell_error");
+            } else {
+              $("#grid_code").removeClass("mdc-layout-grid__cell_error");
+            }
+          }
+        );
+
+        $("#grid_phone div.itemLevel.error").on(
+          "DOMSubtreeModified",
+          function (value) {
+            if ($(this)[0].innerText !== "") {
+              $("#grid_phone").addClass("mdc-layout-grid__cell_error");
+            } else {
+              $("#grid_phone").removeClass("mdc-layout-grid__cell_error");
+            }
+          }
+        );
+
+        $("#grid_country div.itemLevel.error").on(
+          "DOMSubtreeModified",
+          function (value) {
+            if ($(this)[0].innerText !== "") {
+              $("#grid_country").addClass("mdc-layout-grid__cell_error");
+            } else {
+              $("#grid_country").removeClass("mdc-layout-grid__cell_error");
+            }
+          }
+        );
+
+        $("#continue").html("Get Started");
+        $('label[for="verificationCode"]').html("Verification Code");
+
+        $("div.intro").hide();
+
+        $("#cancel").hide();
+        $(".phoneEntry").hide();
+        $("div.heading").hide();
+
+        $(":input").removeAttr("placeholder");
+
+        $(":input").blur(function () {
+          var $this = $(this);
+
+          if ($this.val()) $this.addClass("used");
+          else $this.removeClass("used");
+        });
+
+        $("#codeVerification").on("stylechanged", function () {
+          if (
+            !$("#codeVerification")
+              .attr("style")
+              .replace(" ", "")
+              .includes("display:none")
+          ) {
+            //
+            // $("#continue").text("Reset Password");
+            $("a#retryCode").show();
+            $("a#retryCode").html("Send New");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

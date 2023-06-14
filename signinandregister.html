@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Motus | Sign In</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta
+      content="text/html; charset=UTF-8; X-Content-Type-Options=nosniff"
+      http-equiv="Content-Type"
+    />
+    <link
+      href="https://www.e-procure.co.za/StyleSheet-SignUp.css"
+      rel="stylesheet"
+      data-preload="true"
+    />
+    <link
+      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.cdnfonts.com/css/hk-nova" rel="stylesheet" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://www.e-procure.co.za/motus_sitelogo.ico"
+    />
+  </head>
+
+  <body>
+    <div class="m_container">
+      <img
+        class="motus_logo"
+        alt="logo"
+        src="https://www.e-procure.co.za/logo.png"
+      />
+      <div class="login-home-group">
+        <a class="login-home" href="https://www.e-procure.co.za/">Home</a>
+      </div>
+      <div class="MuiBox-root form_title">Don't Have an Account?</div>
+      <div
+        class="MuiBox-root motus_paragraph MuiGrid-item MuiGrid-grid-sx-6"
+        style="margin-bottom: 25px"
+      >
+        You’ll need to create an account to complete your pre-approval process.
+        Please register using the below form.
+      </div>
+      <a
+        class="MuiButtonBase-root MuiButton-root MuiButton-text advert_button"
+        tabindex="0"
+        type="button"
+        href="https://www.e-procure.co.za/pre-approval"
+      >
+        <span class="MuiButton-label"
+          >Apply Now<span class="MuiButton-endIcon MuiButton-iconSizeMedium">
+            <svg
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv"
+              focusable="false"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              data-testid="ChevronRightIcon"
+            >
+              <path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+            </svg>
+          </span>
+        </span>
+        <span class="MuiTouchRipple-root"></span>
+      </a>
+      <hr class="divisionBorder" />
+
+      <div class="form_container">
+        <p class="form_header">
+          <img
+            alt
+            class="motus_red_logo"
+            src="https://www.e-procure.co.za/Motus_SiteLogo.png"
+          />
+          Sign in
+        </p>
+        <div class="MuiBox-root motus_paragraph MuiGrid-item MuiGrid-grid-sx-6">
+          Sign in with your Email address or Motus account
+        </div>
+        <div class="MuiBox-root">
+          <div id="api"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(window, document, undefined).ready(function () {
+        onload();
+      });
+
+      (function () {
+        orig = $.fn.css;
+        $.fn.css = function () {
+          var result = orig.apply(this, arguments);
+          $(this).trigger("stylechanged");
+          return result;
+        };
+      })();
+
+      function onload() {
+        $("a:contains('What is this?')").hide();
+        $("#api").prepend(
+          '<div class="mdc-layout-grid attr"><div id="fieldGrid" class="mdc-layout-grid__inner"><div id="grid_email" class="mdc-layout-grid__cell"></div><div id="grid_newpassword" class="mdc-layout-grid__cell"></div><div class="mdc-layout-grid__cell"></div></div></div><hr class="divisionBorder" /><div class="mdc-layout-grid attr"><div class="mdc-layout-grid__inner"><div id="grid_paragraph" class="mdc-layout-grid__cell MuiBox-root motus_paragraph_login_column"></div><div id="grid_button" class="mdc-layout-grid__cell"></div></div></div>'
+        );
+        $("#api").prepend(
+          '<div id="localAccountForm" class="localAccount"></div>'
+        );
+
+        $("#email").parent().appendTo("#grid_email");
+        $("#password").parent().appendTo("#grid_newpassword");
+        $("#forgotPassword").parent().appendTo("#grid_paragraph");
+        $("#MFSEmployees").parent().addClass("buttons");
+
+        $("#MFSEmployees").text("Motus Employee Login");
+        $("#MFSEmployees").css("width", "300");
+        $("div.error.pageLevel").appendTo($("div.localAccount"));
+        $("div.error.pageLevel").addClass("errorText");
+
+        if (window.matchMedia("(max-width: 1370px)").matches) {
+          $("#next").parent().appendTo("#grid_button");
+          $("#MFSEmployees").parent().appendTo("#grid_button");
+        } else {
+          $("#MFSEmployees").parent().appendTo("#grid_button");
+          $("#next").parent().appendTo("#grid_button");
+        }
+
+        $("#email").after($('label[for="email"]'));
+        $("#password").after($('label[for="password"]'));
+
+        $('label[for="email"]').after(
+          $("#grid_email div.entry-item div.itemLevel")
+        );
+        $('label[for="password"]').after(
+          $("#grid_newpassword div.entry-item div.itemLevel")
+        );
+
+        $("#grid_email div.entry-item div.itemLevel").addClass("errorText");
+        $("#grid_newpassword div.entry-item div.itemLevel").addClass(
+          "errorText"
+        );
+
+        $("#grid_email div.entry-item div.itemLevel").on(
+          "DOMSubtreeModified",
+          function (value) {
+            if (window.matchMedia("(max-width: 480px)").matches) {
+              if ($(this)[0].innerText !== "") {
+                $("#grid_email").addClass("mdc-layout-grid__cell_error");
+              } else {
+                $("#grid_email").removeClass("mdc-layout-grid__cell_error");
+              }
+            }
+          }
+        );
+
+        $("div.heading h1").hide();
+
+        $(":input").removeAttr("placeholder");
+
+        $(".claims-provider-list-buttons").hide();
+        $(".divider").hide();
+        $("form").hide();
+
+        $(":input").blur(function () {
+          var $this = $(this);
+
+          if ($this.val()) $this.addClass("used");
+          else $this.removeClass("used");
+        });
+      }
+    </script>
+  </body>
+</html>
